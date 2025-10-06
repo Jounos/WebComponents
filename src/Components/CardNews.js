@@ -12,22 +12,28 @@ class CardNews extends HTMLElement {
     componentRoot.setAttribute('class', 'card');
     
     const cardLeft = document.createElement('div');
-    componentRoot.setAttribute('class', 'card-left');
+    cardLeft.setAttribute('class', 'card-left');
     
     const autor = document.createElement('span');
-    autor.textContent = 'By ' + this.getAttribute("autor");
+    autor.textContent = 'By ' + (this.getAttribute("autor") || 'Anonymous');
     
     const linkTitle = document.createElement('a');
-    const paragrafo = documento.createElement('p');
+    linkTitle.textContent = this.getAttribute('title');
+    linkTitle.href = this.getAttribute('link-url');
+
+    const newsContent = document.createElement('p');
+    newsContent.textContent = this.getAttribute('content');
     
     cardLeft.appendChild(autor);
     cardLeft.appendChild(linkTitle);
-    cardLeft.appendChild(paragrafo);
+    cardLeft.appendChild(newsContent);
 
     const cardRight = document.createElement('div');
-    componentRoot.setAttribute('class', 'card-right');
+    cardRight.setAttribute('class', 'card-right');
 
-    const newsImage = document.createAttribute('img');
+    const newsImage = document.createElement('img');
+    newsImage.src = this.getAttribute('photo') || 'assets/foto-default.png';
+    newsImage.alt = 'Foto da notícia';
     cardRight.appendChild(newsImage);
 
     componentRoot.appendChild(cardLeft);
@@ -37,7 +43,51 @@ class CardNews extends HTMLElement {
   }
 
   styles() {
+    const style = document.createElement('style');
 
+    style.textContent = `
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Segoe UI', sans-serif;
+      }
+
+      .card {
+          width: 80%;
+          box-shadow: 10px 10px 34px 0px rgba(0,0,0,0.75);
+          -webkit-box-shadow: 10px 10px 34px 0px rgba(0,0,0,0.75);
+          -moz-box-shadow: 10px 10px 34px 0px rgba(0,0,0,0.75);
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+      }
+
+      .card-left {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding-left: 10px;
+      }
+
+      .card-left > span {
+          font-weight: 400;
+      }
+
+      .card-left > a {
+          margin-top: 15px;
+          font-size: 25px;
+          color: black;
+          text-decoration: none;
+          font-weight: bold;
+      }
+
+      .card-left > p {
+          color: rgb(70, 70, 70);
+      }
+    `;
+
+    return style;
   }
 }
 
